@@ -8,6 +8,13 @@ void viewDeliveryRecords();
 void generateReports();
 void saveData();
 
+void addCity();
+void renameCity();
+void removeCity();
+void displayCities();
+int findCity(char *name);
+
+
 
 int main() {
 
@@ -35,19 +42,19 @@ int choice;
                 manageCities();
                 break;
             case 2:
-                manageDistances();
+                //manageDistances();
                 break;
             case 3:
-                deliveryRequest();
+               // deliveryRequest();
                 break;
             case 4:
-                viewDeliveryRecords();
+                //viewDeliveryRecords();
                 break;
             case 5:
-                generateReports();
+                //generateReports();
                 break;
             case 6:
-                saveData();
+                //saveData();
                 printf("Data saved. Exiting...\n");
                 exit(0);
             default:
@@ -58,3 +65,42 @@ int choice;
     return 0;
     }
 
+
+    void manageCities() {
+    int choice;
+
+    while (1) {
+            printf("\n");
+        printf("========================================================\n");
+        printf("       CITY MANAGEMENT\n");
+        printf("========================================================\n");
+        printf("1. Add New City\n");
+        printf("2. Rename City\n");
+        printf("3. Remove City\n");
+        printf("4. Display All Cities\n");
+        printf("5. Back to Main Menu\n");
+        printf("========================================================\n");
+        printf("Enter your choice: ");
+       scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                //addCity();
+                break;
+            case 2:
+                //renameCity();
+                break;
+            case 3:
+                //removeCity();
+                break;
+            case 4:
+                //displayCities();
+                break;
+            case 5:
+                return ;
+            default:
+                printf("Invalid choice!\n");
+
+        }
+    }
+}

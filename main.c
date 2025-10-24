@@ -17,6 +17,16 @@ float vehicleRate[3] = {30.0, 40.0, 80.0};
 float vehicleSpeed[3] = {60.0, 50.0, 45.0};
 float vehicleEfficiency[3] = {12.0, 6.0, 4.0};
 
+int deliverySource[MAX_DELIVERIES];
+int deliveryDest[MAX_DELIVERIES];
+int deliveryWeight[MAX_DELIVERIES];
+int deliveryVehicle[MAX_DELIVERIES];
+float deliveryDistance[MAX_DELIVERIES];
+float deliveryCost[MAX_DELIVERIES];
+float deliveryTime[MAX_DELIVERIES];
+float deliveryRevenue[MAX_DELIVERIES];
+float deliveryProfit[MAX_DELIVERIES];
+
 void initializeSystem();
 void manageCities();
 void manageDistances();
@@ -72,7 +82,7 @@ int main()
             handleDeliveryRequest();
             break;
         case 4:
-            //viewDeliveryRecords();
+            viewDeliveryRecords();
             break;
         case 5:
             //generateReports();
@@ -448,18 +458,21 @@ void displayDistanceTable()
     printf("========================================================\n");
 }
 
-void handleDeliveryRequest() {
+void handleDeliveryRequest()
+{
     int source, dest, weight, vehicleType;
     float cost, time, fuelUsed, fuelCost, totalCost, profit, customerCharge;
     int minDistance;
 
-    if (cityCount < 2) {
+    if (cityCount < 2)
+    {
         printf("Need at least 2 cities for delivery!\n");
 
         return;
     }
 
-    if (deliveryCount >= MAX_DELIVERIES) {
+    if (deliveryCount >= MAX_DELIVERIES)
+    {
         printf("Maximum delivery limit reached!\n");
 
         return;
@@ -474,7 +487,8 @@ void handleDeliveryRequest() {
     displayCities();
 
     printf("\nEnter source city number: ");
-    if (scanf("%d", &source) != 1 || source < 1 || source > cityCount) {
+    if (scanf("%d", &source) != 1 || source < 1 || source > cityCount)
+    {
         clearInputBuffer();
         printf("Invalid city number!\n");
 
@@ -482,7 +496,8 @@ void handleDeliveryRequest() {
     }
 
     printf("Enter destination city number: ");
-    if (scanf("%d", &dest) != 1 || dest < 1 || dest > cityCount) {
+    if (scanf("%d", &dest) != 1 || dest < 1 || dest > cityCount)
+    {
         clearInputBuffer();
         printf("Invalid city number!\n");
 
@@ -493,7 +508,8 @@ void handleDeliveryRequest() {
     source--;
     dest--;
 
-    if (source == dest) {
+    if (source == dest)
+    {
         printf("Source and destination cannot be the same!\n");
 
         return;
@@ -504,7 +520,8 @@ void handleDeliveryRequest() {
     printf("2. Truck (Capacity: 5000 kg, Rate: 40 LKR/km)\n");
     printf("3. Lorry (Capacity: 10000 kg, Rate: 80 LKR/km)\n");
     printf("\nSelect vehicle type (1-3): ");
-    if (scanf("%d", &vehicleType) != 1 || vehicleType < 1 || vehicleType > 3) {
+    if (scanf("%d", &vehicleType) != 1 || vehicleType < 1 || vehicleType > 3)
+    {
         clearInputBuffer();
         printf("Invalid vehicle type!\n");
 
@@ -513,7 +530,8 @@ void handleDeliveryRequest() {
     vehicleType--;
 
     printf("Enter weight in kg: ");
-    if (scanf("%d", &weight) != 1 || weight <= 0) {
+    if (scanf("%d", &weight) != 1 || weight <= 0)
+    {
         clearInputBuffer();
         printf("Invalid weight!\n");
 
@@ -521,7 +539,8 @@ void handleDeliveryRequest() {
     }
     clearInputBuffer();
 
-    if (weight > vehicleCapacity[vehicleType]) {
+    if (weight > vehicleCapacity[vehicleType])
+    {
         printf("Weight exceeds vehicle capacity!\n");
 
         return;
@@ -530,7 +549,8 @@ void handleDeliveryRequest() {
 
     minDistance = findShortestPath(source, dest);
 
-    if (minDistance == 0) {
+    if (minDistance == 0)
+    {
         printf("No route found between these cities!\n");
         pauseScreen();
         return;
@@ -567,6 +587,35 @@ void handleDeliveryRequest() {
 
 }
 
+void viewDeliveryRecords()
+{
+    int i;
+    printf("\n");
+    printf("========================================================\n");
+    printf(" DELIVERY RECORDS\n");
+    printf("========================================================\n");
+    if (deliveryCount == 0)
+    {
+        printf("No delivery records available.\n");
+    }
+    else
+    {
+        printf("Total Deliveries: %d\n\n", deliveryCount);
+        for (i = 0; i < deliveryCount; i++)
+        {
+            printf("Delivery #%d\n", i + 1);
+            printf(" From: %s -> To: %s\n", cities[deliverySource[i]], cities[deliveryDest[i]]);
+            printf(" Distance: %.2f km\n", deliveryDistance[i]);
+            printf(" Vehicle: %s\n", vehicleTypes[deliveryVehicle[i]]);
+            printf(" Weight: %d kg\n", deliveryWeight[i]);
+            printf(" Revenue: %.2f LKR\n", deliveryRevenue[i]);
+            printf(" Profit: %.2f LKR\n", deliveryProfit[i]);
+            printf(" Time: %.2f hours\n", deliveryTime[i]);
+            printf("------------------------------------------------------\n");
+        }
+    }
+
+}
 
 
 void clearInputBuffer()

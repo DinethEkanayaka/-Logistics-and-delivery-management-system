@@ -1,5 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#define MAX_CITIES 30
+#define MAX_NAME_LENGTH 50
+
+char cities[MAX_CITIES][MAX_NAME_LENGTH];
+int cityCount = 0;
+
 
 void manageCities();
 void manageDistances();
@@ -12,12 +20,12 @@ void addCity();
 void renameCity();
 void removeCity();
 void displayCities();
-int findCity(char *name);
+//int findCity(char *name);
 
 
 
 int main() {
-
+char cities[MAX_CITIES][MAX_NAME_LENGTH];
 int choice;
 
     while (1) {
@@ -65,6 +73,17 @@ int choice;
     return 0;
     }
 
+void initializeSystem() {
+    int i, j;
+
+
+
+    for (i = 0; i < MAX_CITIES; i++) {
+        strcpy(cities[i], "");
+    }
+}
+
+
 
     void manageCities() {
     int choice;
@@ -85,10 +104,10 @@ int choice;
 
         switch (choice) {
             case 1:
-                //addCity();
+                addCity();
                 break;
             case 2:
-                //renameCity();
+               // renameCity();
                 break;
             case 3:
                 //removeCity();
@@ -104,3 +123,30 @@ int choice;
         }
     }
 }
+
+void addCity() {
+    char newCity[MAX_NAME_LENGTH];
+
+    if (cityCount >= MAX_CITIES) {
+        printf("Maximum city limit reached!\n");
+
+        return;
+    }
+
+    printf("\nEnter city name: ");
+    fgets(newCity, MAX_NAME_LENGTH, stdin);
+
+    if (strlen(newCity) == 0) {
+        printf("City name cannot be empty!\n");
+
+        return;
+    }
+
+
+
+    strcpy(cities[cityCount], newCity);
+    cityCount++;
+    printf("City '%s' added successfully!\n", newCity);
+
+}
+

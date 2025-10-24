@@ -20,7 +20,7 @@ void addCity();
 void renameCity();
 void removeCity();
 void displayCities();
-//int findCity(char *name);
+int findCity(char *name);
 
 
 
@@ -142,11 +142,73 @@ void addCity() {
         return;
     }
 
+    if (findCity(newCity) != -1) {
+        printf("City already exists!\n");
+
+        return;
+    }
+
 
 
     strcpy(cities[cityCount], newCity);
     cityCount++;
     printf("City '%s' added successfully!\n", newCity);
 
+}
+
+void renameCity() {
+    char oldName[MAX_NAME_LENGTH], newName[MAX_NAME_LENGTH];
+    int index;
+
+    if (cityCount == 0) {
+        printf("No cities available!\n");
+
+        return;
+    }
+
+    displayCities();
+    printf("\nEnter city name to rename: ");
+    fgets(oldName, MAX_NAME_LENGTH, stdin);
+
+    index = findCity(oldName);
+    if (index == -1) {
+        printf("City not found!\n");
+
+        return;
+    }
+
+    printf("Enter new name: ");
+    fgets(newName, MAX_NAME_LENGTH, stdin);
+
+    if (strlen(newName) == 0) {
+        printf("City name cannot be empty!\n");
+
+        return;
+    }
+
+    if (findCity(newName) != -1) {
+        printf("City with this name already exists!\n");
+
+        return;
+    }
+
+    strcpy(cities[index], newName);
+    printf("City renamed successfully!\n");
+
+}
+
+int findCity(char *name) {
+    int i;
+    char searchName[MAX_NAME_LENGTH], cityName[MAX_NAME_LENGTH];
+
+    strcpy(searchName, name);
+
+    for (i = 0; i < cityCount; i++) {
+        strcpy(cityName, cities[i]);
+        if (strcmp(cityName, searchName) == 0) {
+            return i;
+        }
+    }
+    return -1;
 }
 

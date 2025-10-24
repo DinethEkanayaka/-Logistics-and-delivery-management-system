@@ -448,111 +448,107 @@ void displayDistanceTable()
     printf("========================================================\n");
 }
 
-
-void handleDeliveryRequest()
-{
+void handleDeliveryRequest() {
     int source, dest, weight, vehicleType;
     float cost, time, fuelUsed, fuelCost, totalCost, profit, customerCharge;
     int minDistance;
-    if (cityCount < 2)
-    {
+
+    if (cityCount < 2) {
         printf("Need at least 2 cities for delivery!\n");
 
         return;
     }
-    if (deliveryCount >= MAX_DELIVERIES)
-    {
+
+    if (deliveryCount >= MAX_DELIVERIES) {
         printf("Maximum delivery limit reached!\n");
 
         return;
     }
 
+
     printf("\n");
     printf("========================================================\n");
-    printf(" NEW DELIVERY REQUEST\n");
+    printf("       NEW DELIVERY REQUEST\n");
     printf("========================================================\n");
+
     displayCities();
+
     printf("\nEnter source city number: ");
-    if (scanf("%d", &source) != 1 || source < 1 || source > cityCount)
-    {
+    if (scanf("%d", &source) != 1 || source < 1 || source > cityCount) {
         clearInputBuffer();
         printf("Invalid city number!\n");
 
         return;
     }
+
     printf("Enter destination city number: ");
-    if (scanf("%d", &dest) != 1 || dest < 1 || dest > cityCount)
-    {
+    if (scanf("%d", &dest) != 1 || dest < 1 || dest > cityCount) {
         clearInputBuffer();
         printf("Invalid city number!\n");
 
         return;
     }
     clearInputBuffer();
+
     source--;
     dest--;
-    if (source == dest)
-    {
+
+    if (source == dest) {
         printf("Source and destination cannot be the same!\n");
 
         return;
     }
+
     printf("\nAvailable Vehicles:\n");
     printf("1. Van (Capacity: 1000 kg, Rate: 30 LKR/km)\n");
     printf("2. Truck (Capacity: 5000 kg, Rate: 40 LKR/km)\n");
     printf("3. Lorry (Capacity: 10000 kg, Rate: 80 LKR/km)\n");
     printf("\nSelect vehicle type (1-3): ");
-    if (scanf("%d", &vehicleType) != 1 || vehicleType < 1 || vehicleType > 3)
-    {
+    if (scanf("%d", &vehicleType) != 1 || vehicleType < 1 || vehicleType > 3) {
         clearInputBuffer();
         printf("Invalid vehicle type!\n");
 
         return;
     }
     vehicleType--;
+
     printf("Enter weight in kg: ");
-    if (scanf("%d", &weight) != 1 || weight <= 0)
-    {
+    if (scanf("%d", &weight) != 1 || weight <= 0) {
         clearInputBuffer();
         printf("Invalid weight!\n");
 
         return;
     }
     clearInputBuffer();
-    if (weight > vehicleCapacity[vehicleType])
-    {
+
+    if (weight > vehicleCapacity[vehicleType]) {
         printf("Weight exceeds vehicle capacity!\n");
 
         return;
     }
 
 
+    minDistance = findShortestPath(source, dest);
+
+    if (minDistance == 0) {
+        printf("No route found between these cities!\n");
+        pauseScreen();
+        return;
+    }
 
 
-
+    cost = minDistance * vehicleRate[vehicleType] * (1 + (weight / 10000.0));
+    time = minDistance / vehicleSpeed[vehicleType];
+    fuelUsed = minDistance / vehicleEfficiency[vehicleType];
+    fuelCost = fuelUsed * FUEL_PRICE;
+    totalCost = cost + fuelCost;
+    profit = cost * 0.25;
+    customerCharge = totalCost + profit;
 
 
     printf("\n");
     printf("======================================================\n");
-    printf(" DELIVERY COST ESTIMATION\n");
-    printf("------------------------------------------------------\n");
-    printf("From: %s\n", cities[source]);
-    printf("To: %s\n", cities[dest]);
-    printf("Minimum Distance: %d km\n", minDistance);
-    printf("Vehicle: %s\n", vehicleTypes[vehicleType]);
-    printf("Weight: %d kg\n", weight);
-    printf("------------------------------------------------------\n");
-    printf("Base Cost: %.2f LKR\n", cost);
-    printf("Fuel Used: %.2f L\n", fuelUsed);
-    printf("Fuel Cost: %.2f LKR\n", fuelCost);
-    printf("Operational Cost: %.2f LKR\n", totalCost);
-    printf("Profit: %.2f LKR\n", profit);
-    printf("Customer Charge: %.2f LKR\n", customerCharge);
-    printf("Estimated Time: %.2f hours\n", time);
-    printf("======================================================\n");
-    printf("\n");
-    printf("======================================================\n");
-    printf(" DELIVERY COST ESTIMATION\n");
+    printf("       DELIVERY COST ESTIMATION\n");
     printf("------------------------------------------------------\n");
     printf("From: %s\n", cities[source]);
     printf("To: %s\n", cities[dest]);
@@ -573,10 +569,8 @@ void handleDeliveryRequest()
 
 
 
-
-
-    void clearInputBuffer()
-    {
-        int c;
-        while ((c = getchar()) != '\n' && c != EOF);
-    }
+void clearInputBuffer()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}

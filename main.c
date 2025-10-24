@@ -212,3 +212,47 @@ int findCity(char *name) {
     return -1;
 }
 
+void removeCity() {
+    char cityName[MAX_NAME_LENGTH];
+    int index, i;
+
+    if (cityCount == 0) {
+        printf("No cities available!\n");
+
+        return;
+    }
+
+    displayCities();
+    printf("\nEnter city name to remove: ");
+    fgets(cityName, MAX_NAME_LENGTH, stdin);
+
+    index = findCity(cityName);
+    if (index == -1) {
+        printf("City not found!\n");
+
+        return;
+    }
+
+    for (i = index; i < cityCount - 1; i++) {
+        strcpy(cities[i], cities[i + 1]);
+    }
+
+    for (i = index; i < cityCount - 1; i++) {
+        int j;
+        for (j = 0; j < cityCount; j++) {
+            distances[i][j] = distances[i + 1][j];
+        }
+    }
+
+    for (i = index; i < cityCount - 1; i++) {
+        int j;
+        for (j = 0; j < cityCount; j++) {
+            distances[j][i] = distances[j][i + 1];
+        }
+    }
+
+    cityCount--;
+    printf("City removed successfully!\n");
+
+}
+

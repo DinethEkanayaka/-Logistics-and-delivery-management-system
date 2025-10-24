@@ -85,7 +85,7 @@ int main()
             viewDeliveryRecords();
             break;
         case 5:
-            //generateReports();
+            generateReports();
             break;
         case 6:
             // saveData();
@@ -616,6 +616,49 @@ void viewDeliveryRecords()
     }
 
 }
+
+void generateReports()
+{
+    int i;
+    float totalDistance = 0, totalRevenue = 0, totalProfit = 0, avgTime = 0;
+    float longestRoute = 0, shortestRoute = 10000;
+
+    printf("\n");
+    printf("========================================================\n");
+    printf(" PERFORMANCE REPORT\n");
+    printf("========================================================\n");
+    if (deliveryCount == 0)
+    {
+        printf("No delivery data available for reports.\n");
+        return;
+    }
+    for (i = 0; i < deliveryCount; i++)
+    {
+        totalDistance += deliveryDistance[i];
+        totalRevenue += deliveryRevenue[i];
+        totalProfit += deliveryProfit[i];
+        avgTime += deliveryTime[i];
+        if (deliveryDistance[i] > longestRoute)
+        {
+            longestRoute = deliveryDistance[i];
+        }
+        if (deliveryDistance[i] < shortestRoute)
+        {
+            shortestRoute = deliveryDistance[i];
+        }
+    }
+    avgTime /= deliveryCount;
+    printf("Total Deliveries Completed: %d\n", deliveryCount);
+    printf("Total Distance Covered: %.2f km\n", totalDistance);
+    printf("Average Delivery Time: %.2f hours\n", avgTime);
+    printf("Total Revenue: %.2f LKR\n", totalRevenue);
+    printf("Total Profit: %.2f LKR\n", totalProfit);
+    printf("Longest Route: %.2f km\n", longestRoute);
+    printf("Shortest Route: %.2f km\n", shortestRoute);
+    printf("========================================================\n");
+
+}
+
 
 
 void clearInputBuffer()

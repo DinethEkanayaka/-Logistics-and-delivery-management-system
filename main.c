@@ -25,7 +25,7 @@ int findCity(char *name);
 
 
 int main() {
-char cities[MAX_CITIES][MAX_NAME_LENGTH];
+
 int choice;
 
     while (1) {
@@ -197,20 +197,7 @@ void renameCity() {
 
 }
 
-int findCity(char *name) {
-    int i;
-    char searchName[MAX_NAME_LENGTH], cityName[MAX_NAME_LENGTH];
 
-    strcpy(searchName, name);
-
-    for (i = 0; i < cityCount; i++) {
-        strcpy(cityName, cities[i]);
-        if (strcmp(cityName, searchName) == 0) {
-            return i;
-        }
-    }
-    return -1;
-}
 
 void removeCity() {
     char cityName[MAX_NAME_LENGTH];
@@ -256,3 +243,37 @@ void removeCity() {
 
 }
 
+
+void displayCities() {
+    int i;
+
+    printf("\n");
+    printf("========================================================\n");
+    printf("       AVAILABLE CITIES (%d)\n", cityCount);
+    printf("========================================================\n");
+
+    if (cityCount == 0) {
+        printf("No cities available.\n");
+        return;
+    }
+
+    for (i = 0; i < cityCount; i++) {
+        printf("%d. %s\n", i + 1, cities[i]);
+    }
+    printf("========================================================\n");
+}
+
+int findCity(char *name) {
+    int i;
+    char searchName[MAX_NAME_LENGTH], cityName[MAX_NAME_LENGTH];
+
+    strcpy(searchName, name);
+
+    for (i = 0; i < cityCount; i++) {
+        strcpy(cityName, cities[i]);
+        if (strcmp(cityName, searchName) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}

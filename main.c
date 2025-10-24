@@ -9,7 +9,7 @@ char cities[MAX_CITIES][MAX_NAME_LENGTH];
 int distances[MAX_CITIES][MAX_CITIES];
 int cityCount = 0;
 
-
+void initializeSystem();
 void manageCities();
 void manageDistances();
 void deliveryRequest();
@@ -27,10 +27,11 @@ void inputDistance();
 void editDistance();
 void displayDistanceTable();
 
+void clearInputBuffer();
 
 int main()
 {
-
+    initializeSystem();
     int choice;
 
     while (1)
@@ -57,10 +58,10 @@ int main()
             manageCities();
             break;
         case 2:
-            //manageDistances();
+            manageDistances();
             break;
         case 3:
-            // deliveryRequest();
+            //deliveryRequest();
             break;
         case 4:
             //viewDeliveryRecords();
@@ -69,7 +70,7 @@ int main()
             //generateReports();
             break;
         case 6:
-            //saveData();
+           // saveData();
             printf("Data saved. Exiting...\n");
             exit(0);
         default:
@@ -84,7 +85,13 @@ void initializeSystem()
 {
     int i, j;
 
-
+    for (i = 0; i < MAX_CITIES; i++)
+    {
+        for (j = 0; j < MAX_CITIES; j++)
+        {
+            distances[i][j] = 0;
+        }
+    }
 
     for (i = 0; i < MAX_CITIES; i++)
     {
@@ -111,7 +118,7 @@ void manageCities()
         printf("5. Back to Main Menu\n");
         printf("========================================================\n");
         printf("Enter your choice: ");
-        scanf("%d", &choice);
+        scanf(" %d", &choice);
 
         switch (choice)
         {
@@ -119,13 +126,13 @@ void manageCities()
             addCity();
             break;
         case 2:
-            // renameCity();
+             renameCity();
             break;
         case 3:
-            //removeCity();
+            removeCity();
             break;
         case 4:
-            //displayCities();
+            displayCities();
             break;
         case 5:
             return ;
@@ -146,9 +153,9 @@ void addCity()
 
         return;
     }
-
+    clearInputBuffer();
     printf("\nEnter city name: ");
-    fgets(newCity, MAX_NAME_LENGTH, stdin);
+    fgets( newCity, MAX_NAME_LENGTH, stdin);
 
     if (strlen(newCity) == 0)
     {
@@ -185,6 +192,8 @@ void renameCity()
     }
 
     displayCities();
+
+    clearInputBuffer();
     printf("\nEnter city name to rename: ");
     fgets(oldName, MAX_NAME_LENGTH, stdin);
 
@@ -233,6 +242,8 @@ void removeCity()
     }
 
     displayCities();
+
+    clearInputBuffer();
     printf("\nEnter city name to remove: ");
     fgets(cityName, MAX_NAME_LENGTH, stdin);
 
@@ -369,7 +380,7 @@ void inputDistance()
     {
 
         printf("Invalid city number!\n");
-
+clearInputBuffer();
         return;
     }
     printf("Enter second city number: ");
@@ -377,7 +388,7 @@ void inputDistance()
     {
 
         printf("Invalid city number!\n");
-
+clearInputBuffer();
         return;
     }
 
@@ -394,7 +405,7 @@ void inputDistance()
     {
 
         printf("Invalid distance!\n");
-
+clearInputBuffer();
         return;
     }
 
@@ -402,4 +413,56 @@ void inputDistance()
     distances[city2][city1] = distance;
     printf("Distance set successfully!\n");
 
+}
+
+void displayDistanceTable()
+{
+    int i, j;
+    if (cityCount == 0)
+    {
+        printf("No cities available!\n");
+        return;
+    }
+    printf("\n");
+    printf("========================================================\n");
+    printf(" DISTANCE MATRIX (km)\n");
+    printf("========================================================\n");
+    printf("%-15s", "");
+    for (i = 0; i < cityCount; i++)
+    {
+        printf("%-8s", cities[i]);
+    }
+    printf("\n");
+    for (i = 0; i < cityCount; i++)
+    {
+        printf("%-15s", cities[i]);
+        for (j = 0; j < cityCount; j++)
+        {
+            printf("%-8d", distances[i][j]);
+        }
+        printf("\n");
+    }
+    printf("========================================================\n");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void clearInputBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }

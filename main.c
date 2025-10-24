@@ -353,3 +353,53 @@ void manageDistances()
         }
     }
 }
+
+void inputDistance()
+{
+    int city1, city2, distance;
+    if (cityCount < 2)
+    {
+        printf("Need at least 2 cities to set distances!\n");
+
+        return;
+    }
+    displayCities();
+    printf("\nEnter first city number: ");
+    if (scanf("%d", &city1) != 1 || city1 < 1 || city1 > cityCount)
+    {
+
+        printf("Invalid city number!\n");
+
+        return;
+    }
+    printf("Enter second city number: ");
+    if (scanf("%d", &city2) != 1 || city2 < 1 || city2 > cityCount)
+    {
+
+        printf("Invalid city number!\n");
+
+        return;
+    }
+
+    city1--;
+    city2--;
+    if (city1 == city2)
+    {
+        printf("Cannot set distance from a city to itself!\n");
+
+        return;
+    }
+    printf("Enter distance in km: ");
+    if (scanf("%d", &distance) != 1 || distance < 0)
+    {
+
+        printf("Invalid distance!\n");
+
+        return;
+    }
+
+    distances[city1][city2] = distance;
+    distances[city2][city1] = distance;
+    printf("Distance set successfully!\n");
+
+}

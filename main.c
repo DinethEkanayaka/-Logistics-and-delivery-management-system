@@ -605,6 +605,19 @@ void handleDeliveryRequest()
     printf("Estimated Time: %.2f hours\n", time);
     printf("======================================================\n");
 
+    deliverySource[deliveryCount] = source;
+    deliveryDest[deliveryCount] = dest;
+    deliveryWeight[deliveryCount] = weight;
+    deliveryVehicle[deliveryCount] = vehicleType;
+    deliveryDistance[deliveryCount] = minDistance;
+    deliveryCost[deliveryCount] = cost;
+    deliveryTime[deliveryCount] = time;
+    deliveryRevenue[deliveryCount] = customerCharge;
+    deliveryProfit[deliveryCount] = profit;
+    deliveryCount++;
+
+    printf("\nDelivery request saved successfully!\n");
+
 }
 
 void viewDeliveryRecords()
@@ -818,7 +831,7 @@ void loadData()
     }
     else
     {
-        printf("No previous routes data found. Starting fresh.\n");
+        printf("No previous routes data found.\n");
     }
 
 
@@ -846,7 +859,7 @@ void loadData()
     }
     else
     {
-        printf("No previous delivery records found. Starting fresh.\n");
+        printf("No previous delivery records found.\n");
     }
 }
 

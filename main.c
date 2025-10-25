@@ -35,6 +35,7 @@ void handleDeliveryRequest();
 void viewDeliveryRecords();
 void generateReports();
 void saveData();
+void loadData();
 
 void addCity();
 void renameCity();
@@ -56,6 +57,7 @@ int findLeastCostRoute(int source, int dest, int resultPath[]);
 int main()
 {
     initializeSystem();
+    loadData();
     int choice;
 
     while (1)
@@ -94,7 +96,7 @@ int main()
             generateReports();
             break;
         case 6:
-            // saveData();
+            saveData();
             printf("Data saved. Exiting...\n");
             exit(0);
         default:
@@ -785,7 +787,132 @@ int findLeastCostRoute(int source, int dest, int resultPath[])
 
     return minDist;
 }
+void loadData()
+{
+    FILE *routesFile, *deliveriesFile;
+    int i, j;
 
+
+    routesFile = fopen("routes.txt", "r");
+    if (routesFile != NULL)
+    {
+        fscanf(routesFile, "%d", &cityCount);
+
+
+        for (i = 0; i < cityCount; i++)
+        {
+            fscanf(routesFile, " %[^\n]", cities[i]);
+        }
+
+
+        for (i = 0; i < cityCount; i++)
+        {
+            for (j = 0; j < cityCount; j++)
+            {
+                fscanf(routesFile, "%d", &distances[i][j]);
+            }
+        }
+
+        fclose(routesFile);
+        printf("Routes data loaded successfully!\n");
+    }
+    else
+    {
+        printf("No previous routes data found. Starting fresh.\n");
+    }
+
+
+    deliveriesFile = fopen("deliveries.txt", "r");
+    if (deliveriesFile != NULL)
+    {
+        fscanf(deliveriesFile, "%d", &deliveryCount);
+
+        for (i = 0; i < deliveryCount; i++)
+        {
+            fscanf(deliveriesFile, "%d %d %d %d %f %f %f %f %f",
+                   &deliverySource[i],
+                   &deliveryDest[i],
+                   &deliveryWeight[i],
+                   &deliveryVehicle[i],
+                   &deliveryDistance[i],
+                   &deliveryCost[i],
+                   &deliveryTime[i],
+                   &deliveryRevenue[i],
+                   &deliveryProfit[i]);
+        }
+
+        fclose(deliveriesFile);
+        printf("Delivery records loaded successfully!\n");
+    }
+    else
+    {
+        printf("No previous delivery records found. Starting fresh.\n");
+    }
+}
+
+void saveData()
+{
+    FILE *routesFile, *deliveriesFile;
+    int i, j;
+
+
+    routesFile = fopen("routes.txt", "w");
+    if (routesFile != NULL)
+    {
+        fprintf(routesFile, "%d\n", cityCount);
+
+
+        for (i = 0; i < cityCount; i++)
+        {
+            fprintf(routesFile, "%s\n", cities[i]);
+        }
+
+
+        for (i = 0; i < cityCount; i++)
+        {
+            for (j = 0; j < cityCount; j++)
+            {
+                fprintf(routesFile, "%d ", distances[i][j]);
+            }
+            fprintf(routesFile, "\n");
+        }
+
+        fclose(routesFile);
+        printf("Routes data saved to routes.txt\n");
+    }
+    else
+    {
+        printf("Error: Could not save routes data!\n");
+    }
+
+
+    deliveriesFile = fopen("deliveries.txt", "w");
+    if (deliveriesFile != NULL)
+    {
+        fprintf(deliveriesFile, "%d\n", deliveryCount);
+
+        for (i = 0; i < deliveryCount; i++)
+        {
+            fprintf(deliveriesFile, "%d %d %d %d %.2f %.2f %.2f %.2f %.2f\n",
+                   deliverySource[i],
+                   deliveryDest[i],
+                   deliveryWeight[i],
+                   deliveryVehicle[i],
+                   deliveryDistance[i],
+                   deliveryCost[i],
+                   deliveryTime[i],
+                   deliveryRevenue[i],
+                   deliveryProfit[i]);
+        }
+
+        fclose(deliveriesFile);
+        printf("Delivery records saved to deliveries.txt\n");
+    }
+    else
+    {
+        printf("Error: Could not save delivery records!\n");
+    }
+}
 
 
 
@@ -793,4 +920,19 @@ void clearInputBuffer()
 {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

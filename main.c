@@ -5,6 +5,7 @@
 #define MAX_CITIES 30
 #define MAX_NAME_LENGTH 50
 #define MAX_DELIVERIES 50
+#define FUEL_PRICE 310.0
 
 char cities[MAX_CITIES][MAX_NAME_LENGTH];
 int distances[MAX_CITIES][MAX_CITIES];
@@ -44,8 +45,13 @@ int findCity(char *name);
 void inputDistance();
 void editDistance();
 void displayDistanceTable();
-
 void clearInputBuffer();
+
+
+void swap(int *a, int *b);
+int calculateDistance(int path[], int pathLen);
+void generatePermutations(int arr[], int start, int end, int source, int dest, int *minDist, int bestPath[]);
+int findLeastCostRoute(int source, int dest, int resultPath[]);
 
 int main()
 {
@@ -117,8 +123,6 @@ void initializeSystem()
     }
 }
 
-
-
 void manageCities()
 {
     int choice;
@@ -189,8 +193,6 @@ void addCity()
         return;
     }
 
-
-
     strcpy(cities[cityCount], newCity);
     cityCount++;
     printf("City '%s' added successfully!\n", newCity);
@@ -245,8 +247,6 @@ void renameCity()
 
 }
 
-
-
 void removeCity()
 {
     char cityName[MAX_NAME_LENGTH];
@@ -300,7 +300,6 @@ void removeCity()
     printf("City removed successfully!\n");
 
 }
-
 
 void displayCities()
 {
@@ -463,6 +462,7 @@ void handleDeliveryRequest()
     int source, dest, weight, vehicleType;
     float cost, time, fuelUsed, fuelCost, totalCost, profit, customerCharge;
     int minDistance;
+    int resultPath[MAX_CITIES];
 
     if (cityCount < 2)
     {
@@ -516,9 +516,14 @@ void handleDeliveryRequest()
     }
 
     printf("\nAvailable Vehicles:\n");
-    printf("1. Van (Capacity: 1000 kg, Rate: 30 LKR/km)\n");
-    printf("2. Truck (Capacity: 5000 kg, Rate: 40 LKR/km)\n");
-    printf("3. Lorry (Capacity: 10000 kg, Rate: 80 LKR/km)\n");
+    printf("\n");
+    printf("+----------+--------------+-----------------+\n");
+    printf("| Vehicle  | Capacity(kg) | Rate (LKR/km)   |\n");
+    printf("+----------+--------------+-----------------+\n");
+    printf("| 1. Van   | 1000         | 30              |\n");
+    printf("| 2. Truck | 5000         | 40              |\n");
+    printf("| 3. Lorry | 10000        | 80              |\n");
+    printf("+----------+--------------+-----------------+\n");
     printf("\nSelect vehicle type (1-3): ");
     if (scanf("%d", &vehicleType) != 1 || vehicleType < 1 || vehicleType > 3)
     {
@@ -547,15 +552,28 @@ void handleDeliveryRequest()
     }
 
 
-    minDistance = findShortestPath(source, dest);
+    minDistance = findLeastCostRoute(source, dest, resultPath);
 
     if (minDistance == 0)
     {
         printf("No route found between these cities!\n");
-        pauseScreen();
+
         return;
     }
 
+
+    printf("\nOptimal Route: ");
+    int i = 0;
+    while (resultPath[i] != -1)
+    {
+        printf("%s", cities[resultPath[i]]);
+        if (resultPath[i + 1] != -1)
+        {
+            printf(" -> ");
+        }
+        i++;
+    }
+    printf("\n");
 
     cost = minDistance * vehicleRate[vehicleType] * (1 + (weight / 10000.0));
     time = minDistance / vehicleSpeed[vehicleType];
@@ -575,7 +593,7 @@ void handleDeliveryRequest()
     printf("Minimum Distance: %d km\n", minDistance);
     printf("Vehicle: %s\n", vehicleTypes[vehicleType]);
     printf("Weight: %d kg\n", weight);
-    printf("------------------------------------------------------\n");
+    printf("\n");
     printf("Base Cost: %.2f LKR\n", cost);
     printf("Fuel Used: %.2f L\n", fuelUsed);
     printf("Fuel Cost: %.2f LKR\n", fuelCost);
@@ -658,6 +676,116 @@ void generateReports()
     printf("========================================================\n");
 
 }
+
+
+void swap(int *a, int *b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+int calculateDistance(int path[], int pathLen)
+{
+    int total = 0;
+    int i;
+    for (i = 0; i < pathLen - 1; i++)
+    {
+        if (distances[path[i]][path[i+1]] == 0)
+        {
+            return 999999;
+        }
+        total += distances[path[i]][path[i+1]];
+    }
+    return total;
+}
+
+void generatePermutations(int arr[], int start, int end, int source, int dest, int *minDist, int bestPath[])
+{
+    int i;
+
+    if (start == end)
+    {
+        int path[MAX_CITIES];
+        int len = 0;
+
+        path[len++] = source;
+        for (i = 0; i <= end; i++)
+        {
+            path[len++] = arr[i];
+        }
+        path[len++] = dest;
+
+        int dist = calculateDistance(path, len);
+
+        if (dist < *minDist)
+        {
+            *minDist = dist;
+            for (i = 0; i < len; i++)
+            {
+                bestPath[i] = path[i];
+            }
+            bestPath[len] = -1;
+        }
+        return;
+    }
+
+    for (i = start; i <= end; i++)
+    {
+        swap(&arr[start], &arr[i]);
+        generatePermutations(arr, start + 1, end, source, dest, minDist, bestPath);
+        swap(&arr[start], &arr[i]);
+    }
+}
+
+int findLeastCostRoute(int source, int dest, int resultPath[])
+{
+    int minDist = 999999;
+    int i, len;
+
+
+    if (distances[source][dest] != 0)
+    {
+        minDist = distances[source][dest];
+        resultPath[0] = source;
+        resultPath[1] = dest;
+        resultPath[2] = -1;
+    }
+
+
+    int intermediate[MAX_CITIES];
+    int count = 0;
+
+    for (i = 0; i < cityCount; i++)
+    {
+        if (i != source && i != dest)
+        {
+            intermediate[count++] = i;
+        }
+    }
+
+
+    if (count > 4) count = 4;
+
+    for (len = 1; len <= count; len++)
+    {
+        int subset[MAX_CITIES];
+        for (i = 0; i < len; i++)
+        {
+            subset[i] = intermediate[i];
+        }
+
+        generatePermutations(subset, 0, len - 1, source, dest, &minDist, resultPath);
+    }
+
+    if (minDist == 999999)
+    {
+        return 0;
+    }
+
+    return minDist;
+}
+
 
 
 

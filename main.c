@@ -55,7 +55,9 @@ void generatePermutations(int arr[], int start, int end, int source, int dest, i
 int findLeastCostRoute(int source, int dest, int resultPath[]);
 
 int main()
-{
+{const char *RESET = "\033[0m";
+const char *CYAN = "\033[1;36m";
+
     initializeSystem();
     loadData();
     int choice;
@@ -64,8 +66,8 @@ int main()
     {
 
         printf("\n");
-        printf("========================================================\n");
-        printf("       LOGISTICS MANAGEMENT SYSTEM\n");
+        printf("%s========================================================%s\n",CYAN,RESET);
+        printf("   LOGISTICS MANAGEMENT SYSTEM  %s \n",CYAN );
         printf("========================================================\n");
         printf("1. Manage Cities\n");
         printf("2. Manage Distances\n");
@@ -74,9 +76,14 @@ int main()
         printf("5. Generate Reports\n");
         printf("6. Save and Exit\n");
         printf("========================================================\n");
-        printf("Enter your choice: ");
+        printf("Enter your choice: %s",RESET);
 
-        scanf("%d", &choice);
+         if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+
+            break;
+        }
+         clearInputBuffer();
 
         switch (choice)
         {
@@ -90,10 +97,14 @@ int main()
             handleDeliveryRequest();
             break;
         case 4:
+
             viewDeliveryRecords();
+
             break;
         case 5:
+
             generateReports();
+
             break;
         case 6:
             saveData();
@@ -132,6 +143,8 @@ void manageCities()
     while (1)
     {
         printf("\n");
+        printf("\n");
+        printf("\n");
         printf("========================================================\n");
         printf("       CITY MANAGEMENT\n");
         printf("========================================================\n");
@@ -142,21 +155,34 @@ void manageCities()
         printf("5. Back to Main Menu\n");
         printf("========================================================\n");
         printf("Enter your choice: ");
-        scanf(" %d", &choice);
+
+       if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
+
+            break;
+        }
+         clearInputBuffer();
+
 
         switch (choice)
         {
         case 1:
+
             addCity();
+
             break;
         case 2:
+
             renameCity();
             break;
         case 3:
+
             removeCity();
             break;
         case 4:
+
             displayCities();
+
             break;
         case 5:
             return ;
@@ -197,7 +223,7 @@ void addCity()
 
     strcpy(cities[cityCount], newCity);
     cityCount++;
-    printf("City '%s' added successfully!\n", newCity);
+    printf("City added successfully!\n");
 
 }
 
@@ -323,6 +349,7 @@ void displayCities()
         printf("%d. %s\n", i + 1, cities[i]);
     }
     printf("========================================================\n");
+
 }
 
 int findCity(char *name)
@@ -359,8 +386,12 @@ void manageDistances()
         printf("========================================================\n");
         printf("Enter your choice: ");
 
-        scanf("%d", &choice);
+        if (scanf("%d", &choice) != 1) {
+            printf("Invalid input! Please enter a number.\n");
 
+            break;
+        }
+         clearInputBuffer();
         switch (choice)
         {
         case 1:
@@ -437,6 +468,7 @@ void displayDistanceTable()
         printf("No cities available!\n");
         return;
     }
+
     printf("\n");
     printf("========================================================\n");
     printf(" DISTANCE MATRIX (km)\n");
@@ -444,7 +476,7 @@ void displayDistanceTable()
     printf("%-15s", "");
     for (i = 0; i < cityCount; i++)
     {
-        printf("%-8s", cities[i]);
+        printf("%-18s", cities[i]);
     }
     printf("\n");
     for (i = 0; i < cityCount; i++)
@@ -452,11 +484,11 @@ void displayDistanceTable()
         printf("%-15s", cities[i]);
         for (j = 0; j < cityCount; j++)
         {
-            printf("%-8d", distances[i][j]);
+            printf("%-15d", distances[i][j]);
         }
         printf("\n");
     }
-    printf("========================================================\n");
+    printf("\n");
 }
 
 void handleDeliveryRequest()
@@ -623,6 +655,7 @@ void handleDeliveryRequest()
 void viewDeliveryRecords()
 {
     int i;
+
     printf("\n");
     printf("========================================================\n");
     printf(" DELIVERY RECORDS\n");
@@ -891,7 +924,7 @@ void saveData()
         }
 
         fclose(routesFile);
-        printf("Routes data saved to routes.txt\n");
+
     }
     else
     {
@@ -919,7 +952,7 @@ void saveData()
         }
 
         fclose(deliveriesFile);
-        printf("Delivery records saved to deliveries.txt\n");
+
     }
     else
     {
@@ -933,19 +966,5 @@ void clearInputBuffer()
 {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

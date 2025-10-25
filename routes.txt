@@ -1,7 +1,20 @@
-2
+8
 Galle
-
 Colombo
+Hambantota
+Anuradhapura
+Trincomalee
+Nuwara Eliya
 
-0 100 
-100 0 
+Gampaha
+
+Kaluthara
+
+0 100 0 0 0 0 0 0 
+100 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 
+0 0 0 0 0 0 0 0 

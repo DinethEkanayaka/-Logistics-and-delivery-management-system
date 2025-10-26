@@ -113,16 +113,18 @@ void initializeSystem() {
 void manageCities() {
     int choice;
     while (1) {
-        printf("\n\n\n");
-        printf("========================================================\n");
-        printf("       CITY MANAGEMENT\n");
-        printf("========================================================\n");
+        printf("\n");
+        printf("\n");
+        printf("\n");
+        printf("\n");
+        printf("--------------------CITY MANAGEMENT-----------------------\n");
+        printf("\n");
         printf("1. Add New City\n");
         printf("2. Rename City\n");
         printf("3. Remove City\n");
         printf("4. Display All Cities\n");
         printf("5. Back to Main Menu\n");
-        printf("========================================================\n");
+        printf("----------------------------------------------------------\n");
         printf("Enter your choice: ");
 
         if (scanf("%d", &choice) != 1) {
@@ -293,13 +295,14 @@ void manageDistances() {
     int choice;
     while (1) {
         printf("\n");
-        printf("========================================================\n");
-        printf(" DISTANCE MANAGEMENT\n");
-        printf("========================================================\n");
+        printf("\n");
+        printf("\n");
+        printf("------------------------DISTANCE MANAGEMENT--------------------\n");
+        printf("\n");
         printf("1. Input/Edit Distance\n");
         printf("2. Display Distance Table\n");
         printf("3. Back to Main Menu\n");
-        printf("========================================================\n");
+        printf("\n");
         printf("Enter your choice: ");
 
         if (scanf("%d", &choice) != 1) {
@@ -538,7 +541,7 @@ void viewDeliveryRecords() {
         printf("Total Deliveries: %d\n\n", deliveryCount);
         for (i = 0; i < deliveryCount; i++) {
             printf("Delivery #%d\n", i + 1);
-            printf(" From: %s -> To: %s\n", cities[deliverySource[i]], cities[deliveryDest[i]]);
+            printf(" From: %s   To: %s\n", cities[deliverySource[i]], cities[deliveryDest[i]]);
             printf(" Distance: %.2f km\n", deliveryDistance[i]);
             printf(" Vehicle: %s\n", vehicleTypes[deliveryVehicle[i]]);
             printf(" Weight: %d kg\n", deliveryWeight[i]);
@@ -556,9 +559,10 @@ void generateReports() {
     float longestRoute = 0, shortestRoute = 10000;
 
     printf("\n");
-    printf("========================================================\n");
-    printf(" PERFORMANCE REPORT\n");
-    printf("========================================================\n");
+    printf("\n");
+    printf("\n");
+    printf("----------------------PERFORMANCE REPORT--------------------\n");
+    printf("\n");
     if (deliveryCount == 0) {
         printf("No delivery data available for reports.\n");
         return;
